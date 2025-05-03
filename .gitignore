@@ -175,3 +175,15 @@ cython_debug/
 
 # Python enviornment used throughout the course
 mlops-zoomcamp-env/*
+
+# Data folder
+data/*
+
+# Models folder
+models/*
+
+# Results folder
+results/*
+
+# Ignore internal .DS_Store
+.DS_Store
