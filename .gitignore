@@ -172,3 +172,6 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Python enviornment used throughout the course
+mlops-zoomcamp-env/*
