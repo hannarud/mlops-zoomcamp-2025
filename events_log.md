@@ -7,17 +7,17 @@
 
 ## Week 1
 
-* Went through the videos & comments [here](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/01-intro)
-* Basically, they are also the first 7 videos from the [course playlist](https://www.youtube.com/playlist?list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK)
-* Notes from this week can be found in [week1_notes](week1_notes.md)
+* Went through the videos & comments [here](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/01-intro) (basically, they are also the first 7 videos from the [course playlist](https://www.youtube.com/playlist?list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK))
+* My notes from this week can be found in [week1_notes](week1_notes.md)
 * Homework: [description](https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/cohorts/2025/01-intro/homework.md), submit [here](https://courses.datatalks.club/mlops-zoomcamp-2025/homework/hw1)
+* My solved homework is here: [.ipynb](week1_homework.ipynb), [.html with output](week1_homework.html)
 
 ## Where to pick up
 
-* main flow: https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/01-intro/README.md#14-course-overview
-* main playlist: https://www.youtube.com/watch?v=teP9KWkP6SM&list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK
-* 2025 cohort flow: https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/cohorts/2025/01-intro/homework.md
-* 2025 playlist: https://www.youtube.com/watch?v=rv43YJQsZIw&list=PL3MmuxUbc_hLDZ8j0yyeX14N7fGfV4ovC&index=2 - basically, I watched everything here
+* main flow: https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/02-experiment-tracking
+* main playlist: https://youtu.be/MiA7LQin9c8?si=S4XEKhuCy7p31Bz0
+* 2025 cohort flow: https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/cohorts/2025/02-experiment-tracking
+* 2025 cohort playlist: https://www.youtube.com/watch?v=rv43YJQsZIw&list=PL3MmuxUbc_hLDZ8j0yyeX14N7fGfV4ovC&index=2 - basically, I watched everything here already
 
 ## Homeworks and projects
 
