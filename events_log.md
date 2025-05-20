@@ -12,6 +12,13 @@
 * Homework: [description](https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/cohorts/2025/01-intro/homework.md), submit [here](https://courses.datatalks.club/mlops-zoomcamp-2025/homework/hw1)
 * My solved homework is here: [.ipynb](week1_homework.ipynb), [.html with output](week1_homework.html)
 
+## Week 2
+
+* Went through the videos & comments [here](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/02-experiment-tracking) (basically, they are also videos 8-14 from the [course playlist](https://www.youtube.com/playlist?list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK))
+* My notes from this week can be found in [week2_notes](week2_notes.md)
+* Homework: [description](https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/cohorts/2025/02-experiment-tracking/homework.md), submit [here](https://courses.datatalks.club/mlops-zoomcamp-2025/homework/hw2)
+* My solved homework is here: [.ipynb](week2_homework.ipynb), [.html with output](week2_homework.html)
+
 ## Where to pick up
 
 * main flow: https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/02-experiment-tracking
