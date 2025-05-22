@@ -185,6 +185,9 @@ models/*
 # Results folder
 results/*
 
+# Output folder
+output/*
+
 # Ignore internal .DS_Store
 .DS_Store
 
