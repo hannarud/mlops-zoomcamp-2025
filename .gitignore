@@ -187,3 +187,7 @@ results/*
 
 # Ignore internal .DS_Store
 .DS_Store
+
+# MLFlow related files
+mlflow.db
+mlruns/*
