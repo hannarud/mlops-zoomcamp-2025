@@ -15,15 +15,15 @@
 ## Week 2
 
 * Went through the videos & comments [here](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/02-experiment-tracking) (basically, they are also videos 8-14 from the [course playlist](https://www.youtube.com/playlist?list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK))
-* My notes from this week can be found in [week2_notes](week2_notes.md)
+* There was no special notes from me for week 2, some of the notes are placed in the homework file [here](week2_homework.ipynb)
 * Homework: [description](https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/cohorts/2025/02-experiment-tracking/homework.md), submit [here](https://courses.datatalks.club/mlops-zoomcamp-2025/homework/hw2)
 * My solved homework is here: [.ipynb](week2_homework.ipynb), [.html with output](week2_homework.html)
 
 ## Where to pick up
 
-* main flow: https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/02-experiment-tracking
+* main flow: https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/03-orchestration
 * main playlist: https://youtu.be/MiA7LQin9c8?si=S4XEKhuCy7p31Bz0
-* 2025 cohort flow: https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/cohorts/2025/02-experiment-tracking
+* 2025 cohort flow: https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/cohorts/2025/03-orchestration
 * 2025 cohort playlist: https://www.youtube.com/watch?v=rv43YJQsZIw&list=PL3MmuxUbc_hLDZ8j0yyeX14N7fGfV4ovC&index=2 - basically, I watched everything here already
 
 ## Homeworks and projects
@@ -37,3 +37,4 @@ _(put here the links and materials mentioned during the course as useful and I w
 
 * Transfer from .ipynb to ML pipeline https://youtu.be/teP9KWkP6SM?si=wje6pBWt4VbXHY5q - watch again and apply to my work project
 * MLOps maturity model: https://youtu.be/XwTH8BDGzYk?si=MPEURypKC8NjgWhV - check again what I want to cover in my current project
+* MLFlow model registry automated work with hyperparameter tuning + choosing the best model based on its loss https://youtu.be/1ykg4YmbFVA?si=L-NijkWZDMwDo00h

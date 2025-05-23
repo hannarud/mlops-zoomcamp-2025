@@ -27,7 +27,7 @@ def load_pickle(filename: str):
 )
 @click.option(
     "--mlflow_tracking_uri",
-    default="http://localhost:5000",
+    default="http://127.0.0.1:5000",
     help="Tracking URI of the MLflow server",
 )
 @click.option(

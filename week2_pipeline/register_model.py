@@ -58,7 +58,7 @@ def train_and_log_model(data_path, params):
 )
 @click.option(
     "--mlflow_tracking_uri",
-    default="http://localhost:5000",
+    default="http://127.0.0.1:5000",
     help="Tracking URI of the MLflow server",
 )
 def run_register_model(data_path: str, top_n: int, mlflow_tracking_uri: str):
