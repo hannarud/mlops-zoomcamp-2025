@@ -19,7 +19,20 @@ def load_pickle(filename: str):
     default="./output",
     help="Location where the processed NYC taxi trip data was saved",
 )
-def run_train(data_path: str):
+@click.option(
+    "--mlflow_tracking_uri",
+    default="http://localhost:5000",
+    help="Tracking URI of the MLflow server",
+)
+@click.option(
+    "--mlflow_experiment_name",
+    default="week2_homework",
+    help="Name of the experiment",
+)
+def run_train(data_path: str, mlflow_tracking_uri: str, mlflow_experiment_name: str):
+
+    mlflow.set_tracking_uri(mlflow_tracking_uri)
+    mlflow.set_experiment(mlflow_experiment_name)
 
     train_data_path = os.path.join(data_path, "train.pkl")
     val_data_path = os.path.join(data_path, "val.pkl")
@@ -45,9 +58,5 @@ def run_train(data_path: str):
 
 
 if __name__ == "__main__":
-    mlflow.set_tracking_uri("sqlite:///mlflow.db")
-    mlflow.set_experiment("week2_homework")
 
     run_train()
-
-    print("Training finished")
