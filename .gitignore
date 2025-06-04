@@ -195,3 +195,6 @@ output/*
 mlflow.db
 mlruns/*
 artifacts/*
+
+# Run ID file
+run_id.txt
