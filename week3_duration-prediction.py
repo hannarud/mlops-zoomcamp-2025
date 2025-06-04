@@ -6,11 +6,9 @@
 
 import pandas as pd
 import pickle
+from pathlib import Path
 
 from sklearn.feature_extraction import DictVectorizer
-from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import Lasso
-
 from sklearn.metrics import root_mean_squared_error
 
 import xgboost as xgb
@@ -21,32 +19,28 @@ from hyperopt.pyll import scope
 import mlflow
 
 
-mlflow.set_tracking_uri("sqlite:///mlflow.db")
+mlflow.set_tracking_uri("http://127.0.0.1:5000")
 mlflow.set_experiment("nyc-taxi-experiment")
 
-# ## Data
-#
-# Taken from the page: https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page.
-#
-# Downloading "Green Taxi Trip Records" for January and February, 2023.
-
-# !mkdir data
-
-# Green Taxi Trip Records for January, 2023
-# !wget -O data/green_tripdata_2023-01.parquet https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2023-01.parquet
-
-# Green Taxi Trip Records for February, 2023
-# !wget -O data/green_tripdata_2023-02.parquet https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2023-02.parquet
+models_folder = Path("models")
+models_folder.mkdir(exist_ok=True)
 
 
-def read_dataframe(filename):
-    if filename.endswith(".csv"):
-        df = pd.read_csv(filename)
+def read_dataframe(year, month):
+    """
+    Read data from a URL.
+    The data is taken from the page: https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page.
+    Working with "Green Taxi Trip Records".
 
-        df.lpep_dropoff_datetime = pd.to_datetime(df.lpep_dropoff_datetime)
-        df.lpep_pickup_datetime = pd.to_datetime(df.lpep_pickup_datetime)
-    elif filename.endswith(".parquet"):
-        df = pd.read_parquet(filename)
+    Args:
+        year (int): The year of the data.
+        month (int): The month of the data.
+
+    Returns:
+        pd.DataFrame: The dataframe with the data.
+    """
+    url = f"https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_{year}-{month:02d}.parquet"
+    df = pd.read_parquet(url)
 
     df["duration"] = df.lpep_dropoff_datetime - df.lpep_pickup_datetime
     df.duration = df.duration.apply(lambda td: td.total_seconds() / 60)
@@ -61,133 +55,93 @@ def read_dataframe(filename):
     return df
 
 
-train_data_path = "./data/green_tripdata_2023-01.parquet"
-val_data_path = "./data/green_tripdata_2023-02.parquet"
+def create_X(df, dv=None):
+    categorical = ["PU_DO"]
+    numerical = ["trip_distance"]
+    dicts = df[categorical + numerical].to_dict(orient="records")
 
-df_train = read_dataframe(train_data_path)
-df_val = read_dataframe(val_data_path)
+    if dv is None:
+        dv = DictVectorizer(sparse=True)
+        X = dv.fit_transform(dicts)
+    else:
+        X = dv.transform(dicts)
 
-# ## Baseline model
-
-len(df_train), len(df_val)
-
-categorical = ["PU_DO"]  #'PULocationID', 'DOLocationID']
-numerical = ["trip_distance"]
-
-dv = DictVectorizer()
-
-train_dicts = df_train[categorical + numerical].to_dict(orient="records")
-X_train = dv.fit_transform(train_dicts)
-
-val_dicts = df_val[categorical + numerical].to_dict(orient="records")
-X_val = dv.transform(val_dicts)
-
-target = "duration"
-y_train = df_train[target].values
-y_val = df_val[target].values
-
-lr = LinearRegression()
-lr.fit(X_train, y_train)
-
-y_pred = lr.predict(X_val)
-
-root_mean_squared_error(y_val, y_pred)
-
-with open("models/lin_reg.bin", "wb") as f_out:
-    pickle.dump((dv, lr), f_out)
-
-with mlflow.start_run():
-
-    mlflow.set_tag("developer", "hanna")
-
-    mlflow.log_param("train-data-path", train_data_path)
-    mlflow.log_param("val-data-path", val_data_path)
-
-    alpha = 0.1
-
-    mlflow.log_param("alpha", alpha)
-
-    lr = Lasso(alpha)
-    lr.fit(X_train, y_train)
-
-    y_pred = lr.predict(X_val)
-
-    rmse = root_mean_squared_error(y_val, y_pred)
-    mlflow.log_metric("rmse", rmse)
-
-    mlflow.log_artifact(local_path="models/lin_reg.bin", artifact_path="models_pickle")
-
-# ## XGBoost
-
-train = xgb.DMatrix(X_train, label=y_train)
-valid = xgb.DMatrix(X_val, label=y_val)
+    return X, dv
 
 
-def objective(params):
-    with mlflow.start_run():
-        mlflow.set_tag("model", "xgboost")
-        mlflow.log_params(params)
+def train_model(X_train, y_train, X_val, y_val, dv):
+    with mlflow.start_run() as run:
+        train = xgb.DMatrix(X_train, label=y_train)
+        valid = xgb.DMatrix(X_val, label=y_val)
+
+        best_params = {
+            "learning_rate": 0.09585355369315604,
+            "max_depth": 30,
+            "min_child_weight": 1.060597050922164,
+            "objective": "reg:linear",
+            "reg_alpha": 0.018060244040060163,
+            "reg_lambda": 0.011658731377413597,
+            "seed": 42,
+        }
+
+        mlflow.log_params(best_params)
+
         booster = xgb.train(
-            params=params,
+            params=best_params,
             dtrain=train,
-            num_boost_round=1000,
+            num_boost_round=30,
             evals=[(valid, "validation")],
             early_stopping_rounds=50,
         )
+
         y_pred = booster.predict(valid)
         rmse = root_mean_squared_error(y_val, y_pred)
         mlflow.log_metric("rmse", rmse)
 
-    return {"loss": rmse, "status": STATUS_OK}
+        with open("models/preprocessor.b", "wb") as f_out:
+            pickle.dump(dv, f_out)
+        mlflow.log_artifact("models/preprocessor.b", artifact_path="preprocessor")
+
+        mlflow.xgboost.log_model(booster, artifact_path="models_mlflow")
+
+        return run.info.run_id
 
 
-search_space = {
-    "max_depth": scope.int(hp.quniform("max_depth", 4, 100, 1)),
-    "learning_rate": hp.loguniform("learning_rate", -3, 0),
-    "reg_alpha": hp.loguniform("reg_alpha", -5, -1),
-    "reg_lambda": hp.loguniform("reg_lambda", -6, -1),
-    "min_child_weight": hp.loguniform("min_child_weight", -1, 3),
-    "objective": "reg:linear",
-    "seed": 42,
-}
+def run(year, month):
+    df_train = read_dataframe(year=year, month=month)
 
-best_result = fmin(
-    fn=objective, space=search_space, algo=tpe.suggest, max_evals=50, trials=Trials()
-)
+    next_year = year if month < 12 else year + 1
+    next_month = month + 1 if month < 12 else 1
 
-mlflow.xgboost.autolog(disable=True)
+    df_val = read_dataframe(year=next_year, month=next_month)
 
-with mlflow.start_run():
+    X_train, dv = create_X(df_train)
+    X_val, _ = create_X(df_val, dv)
 
-    train = xgb.DMatrix(X_train, label=y_train)
-    valid = xgb.DMatrix(X_val, label=y_val)
+    target = "duration"
+    y_train = df_train[target].values
+    y_val = df_val[target].values
 
-    best_params = {
-        "learning_rate": 0.26716716970531285,
-        "max_depth": 9,
-        "min_child_weight": 4.2386416350260365,
-        "objective": "reg:linear",
-        "reg_alpha": 0.14223944345839543,
-        "reg_lambda": 0.35981469382798437,
-        "seed": 42,
-    }
+    run_id = train_model(X_train, y_train, X_val, y_val, dv)
+    print(f"MLflow run_id: {run_id}")
+    return run_id
 
-    mlflow.log_params(best_params)
 
-    booster = xgb.train(
-        params=best_params,
-        dtrain=train,
-        num_boost_round=1000,
-        evals=[(valid, "validation")],
-        early_stopping_rounds=50,
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Train a model to predict taxi trip duration."
     )
+    parser.add_argument(
+        "--year", type=int, required=True, help="Year of the data to train on"
+    )
+    parser.add_argument(
+        "--month", type=int, required=True, help="Month of the data to train on"
+    )
+    args = parser.parse_args()
 
-    y_pred = booster.predict(valid)
-    rmse = root_mean_squared_error(y_val, y_pred)
-    mlflow.log_metric("rmse", rmse)
+    run_id = run(year=args.year, month=args.month)
 
-    with open("models/preprocessor.b", "wb") as f_out:
-        pickle.dump(dv, f_out)
-    mlflow.log_artifact("models/preprocessor.b", artifact_path="preprocessor")
-
-    mlflow.xgboost.log_model(booster, artifact_path="models_mlflow")
+    with open("run_id.txt", "w") as f:
+        f.write(run_id)
