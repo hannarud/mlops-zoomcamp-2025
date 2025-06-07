@@ -8,22 +8,15 @@ import pandas as pd
 import pickle
 from pathlib import Path
 
+import numpy as np
+import scipy
+import sklearn
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.metrics import root_mean_squared_error
 
 import xgboost as xgb
 
-from hyperopt import fmin, tpe, hp, STATUS_OK, Trials
-from hyperopt.pyll import scope
-
 import mlflow
-
-
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
-mlflow.set_experiment("nyc-taxi-experiment")
-
-models_folder = Path("models")
-models_folder.mkdir(exist_ok=True)
 
 
 def read_dataframe(year, month):
@@ -55,8 +48,13 @@ def read_dataframe(year, month):
     return df
 
 
-def create_X(df, dv=None):
-    categorical = ["PU_DO"]
+def create_X(
+    df: pd.DataFrame, dv: sklearn.feature_extraction.DictVectorizer = None
+) -> tuple[scipy.sparse._csr.csr_matrix, sklearn.feature_extraction.DictVectorizer]:
+    """
+    Create a feature matrix from a dataframe.
+    """
+    categorical = ["PU_DO"]  #'PULocationID', 'DOLocationID']
     numerical = ["trip_distance"]
     dicts = df[categorical + numerical].to_dict(orient="records")
 
@@ -69,7 +67,16 @@ def create_X(df, dv=None):
     return X, dv
 
 
-def train_model(X_train, y_train, X_val, y_val, dv):
+def train_best_model(
+    X_train: scipy.sparse._csr.csr_matrix,
+    y_train: np.ndarray,
+    X_val: scipy.sparse._csr.csr_matrix,
+    y_val: np.ndarray,
+    dv: sklearn.feature_extraction.DictVectorizer,
+) -> str:
+    """
+    Train a model with best hyperparams and write everything out
+    """
     with mlflow.start_run() as run:
         train = xgb.DMatrix(X_train, label=y_train)
         valid = xgb.DMatrix(X_val, label=y_val)
@@ -98,6 +105,7 @@ def train_model(X_train, y_train, X_val, y_val, dv):
         rmse = root_mean_squared_error(y_val, y_pred)
         mlflow.log_metric("rmse", rmse)
 
+        Path("models").mkdir(exist_ok=True)
         with open("models/preprocessor.b", "wb") as f_out:
             pickle.dump(dv, f_out)
         mlflow.log_artifact("models/preprocessor.b", artifact_path="preprocessor")
@@ -107,7 +115,10 @@ def train_model(X_train, y_train, X_val, y_val, dv):
         return run.info.run_id
 
 
-def run(year, month):
+def run(year: int, month: int) -> str:
+    """
+    Run the training pipeline.
+    """
     df_train = read_dataframe(year=year, month=month)
 
     next_year = year if month < 12 else year + 1
@@ -122,7 +133,7 @@ def run(year, month):
     y_train = df_train[target].values
     y_val = df_val[target].values
 
-    run_id = train_model(X_train, y_train, X_val, y_val, dv)
+    run_id = train_best_model(X_train, y_train, X_val, y_val, dv)
     print(f"MLflow run_id: {run_id}")
     return run_id
 
@@ -140,6 +151,9 @@ if __name__ == "__main__":
         "--month", type=int, required=True, help="Month of the data to train on"
     )
     args = parser.parse_args()
+
+    mlflow.set_tracking_uri("http://127.0.0.1:5000")
+    mlflow.set_experiment("nyc-taxi-experiment")
 
     run_id = run(year=args.year, month=args.month)
 
