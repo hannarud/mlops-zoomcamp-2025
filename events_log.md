@@ -47,3 +47,4 @@ _(put here the links and materials mentioned during the course as useful and I w
 * MLOps maturity model: https://youtu.be/XwTH8BDGzYk?si=MPEURypKC8NjgWhV - check again what I want to cover in my current project
 * MLFlow model registry automated work with hyperparameter tuning + choosing the best model based on its loss https://youtu.be/1ykg4YmbFVA?si=L-NijkWZDMwDo00h
 * Try to use Kubeflow pipelines for workflow orchestration
+* Using S3 bucket to receive data updates: https://www.youtube.com/watch?v=jVmaaqs63O8&list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK - try to establish data pipelines with periodic dataset updates and create markdown artifacts
