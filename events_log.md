@@ -22,10 +22,10 @@
 ## Week 3
 
 * Went through the videos & comments [here](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/03-orchestration) (basically, they are also videos 15-16 from the [course playlist](https://www.youtube.com/playlist?list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK)).
-* Decided to use Prefect as an orchestrator this time. So, also watched the videos from [2023](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/cohorts/2023/03-orchestration/prefect) and [2022](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/cohorts/2022/03-orchestration) cohort.
+* Decided to use Prefect as an orchestrator this time. So, also watched the videos from [2023](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/cohorts/2023/03-orchestration/prefect) and [2022](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/cohorts/2022/03-orchestration) cohort (didn't listen to 2022 in the end, because the videos are already rather outdated).
 * My notes from this week can be found in [week3_notes](week3_notes.md)
 * Homework: [description](https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/cohorts/2025/03-orchestration/homework.md), submit [here](https://courses.datatalks.club/mlops-zoomcamp-2025/homework/hw3)
-* My solved homework is here: TODO
+* My solved homework is here: [.py](week3_duration-prediction.py)
 
 ## Where to pick up
 
