@@ -18,7 +18,10 @@ import xgboost as xgb
 
 import mlflow
 
+from prefect import flow, task
 
+
+@task(retries=3, retry_delay_seconds=2)
 def read_dataframe(year, month):
     """
     Read data from a URL.
@@ -48,6 +51,7 @@ def read_dataframe(year, month):
     return df
 
 
+@task
 def create_X(
     df: pd.DataFrame, dv: sklearn.feature_extraction.DictVectorizer = None
 ) -> tuple[scipy.sparse._csr.csr_matrix, sklearn.feature_extraction.DictVectorizer]:
@@ -67,6 +71,7 @@ def create_X(
     return X, dv
 
 
+@task(log_prints=True)
 def train_best_model(
     X_train: scipy.sparse._csr.csr_matrix,
     y_train: np.ndarray,
@@ -115,6 +120,7 @@ def train_best_model(
         return run.info.run_id
 
 
+@flow
 def run(year: int, month: int) -> str:
     """
     Run the training pipeline.
@@ -136,6 +142,19 @@ def run(year: int, month: int) -> str:
     run_id = train_best_model(X_train, y_train, X_val, y_val, dv)
     print(f"MLflow run_id: {run_id}")
     return run_id
+
+
+@flow
+def main_flow() -> None:
+    """
+    Main function to run the training pipeline.
+    """
+    year = 2023
+    month = 1
+    run_id = run(year=year, month=month)
+
+    with open("run_id.txt", "w") as f:
+        f.write(run_id)
 
 
 if __name__ == "__main__":
