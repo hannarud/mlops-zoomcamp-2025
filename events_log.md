@@ -21,17 +21,24 @@
 
 ## Week 3
 
-* Went through the videos & comments [here](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/03-orchestration) (basically, they are also videos 15-16 from the [course playlist](https://www.youtube.com/playlist?list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK)).
+* Went through the videos & comments [here](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/03-orchestration) (basically, they are also videos 15-16 from the [course playlist](https://www.youtube.com/playlist?list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK))
 * Decided to use Prefect as an orchestrator this time. So, also watched the videos from [2023](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/cohorts/2023/03-orchestration/prefect) and [2022](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/cohorts/2022/03-orchestration) cohort (didn't listen to 2022 in the end, because the videos are already rather outdated).
 * My notes from this week can be found in [week3_notes](week3_notes.md)
 * Homework: [description](https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/cohorts/2025/03-orchestration/homework.md), submit [here](https://courses.datatalks.club/mlops-zoomcamp-2025/homework/hw3)
 * My solved homework is here: [.py](week3_duration-prediction.py)
 
+## Week 4
+
+* Went through the videos & comments [here](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/04-deployment) (basically, they are also videos 17-21 from the [course playlist](https://www.youtube.com/playlist?list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK)). Skipped [video 4.4](https://www.youtube.com/watch?v=TCqr9HNcrsI&list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK&index=20) for now
+* Didn't create any dedicated notes file, the lectures have all the materials perfectly covered
+* Homework: [description](https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/cohorts/2025/04-deployment/homework.md), submit [here](https://courses.datatalks.club/mlops-zoomcamp-2025/homework/hw4)
+* My solved homework is here: [week4_homework](week4_homework)
+
 ## Where to pick up
 
-* main flow: https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/04-deployment
+* main flow: https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/05-monitoring
 * main playlist: https://youtu.be/MiA7LQin9c8?si=S4XEKhuCy7p31Bz0
-* 2025 cohort flow: https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/cohorts/2025/04-deployment
+* 2025 cohort flow: https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/cohorts/2025/05-monitoring
 * 2025 cohort playlist: https://www.youtube.com/watch?v=rv43YJQsZIw&list=PL3MmuxUbc_hLDZ8j0yyeX14N7fGfV4ovC&index=2 - basically, I watched everything here already
 
 ## Homeworks and projects
@@ -48,3 +55,4 @@ _(put here the links and materials mentioned during the course as useful and I w
 * MLFlow model registry automated work with hyperparameter tuning + choosing the best model based on its loss https://youtu.be/1ykg4YmbFVA?si=L-NijkWZDMwDo00h
 * Try to use Kubeflow pipelines for workflow orchestration
 * Using S3 bucket to receive data updates: https://www.youtube.com/watch?v=jVmaaqs63O8&list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK - try to establish data pipelines with periodic dataset updates and create markdown artifacts
+* Videos from module 4 are gold :star: + need to watch an optional video before Module 6
