@@ -14,13 +14,18 @@ from prefect import task, flow
 from evidently import Report
 from evidently import DataDefinition
 from evidently import Dataset
-from evidently.metrics import ValueDrift, DriftedColumnsCount, MissingValueCount
+from evidently.metrics import (
+    ValueDrift,
+    DriftedColumnsCount,
+    MissingValueCount,
+    QuantileValue,
+)
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s [%(levelname)s]: %(message)s"
 )
 
-SEND_TIMEOUT = 10
+SEND_TIMEOUT = 1
 rand = random.Random()
 
 create_table_statement = """
@@ -29,7 +34,9 @@ create table dummy_metrics(
 	timestamp timestamp,
 	prediction_drift float,
 	num_drifted_columns integer,
-	share_missing_values float
+	share_missing_values float,
+    fare_amount_quantile float,
+    total_amount_quantile float
 )
 """
 
@@ -37,9 +44,9 @@ reference_data = pd.read_parquet("data/reference.parquet")
 with open("models/lin_reg.bin", "rb") as f_in:
     model = joblib.load(f_in)
 
-raw_data = pd.read_parquet("data/green_tripdata_2022-02.parquet")
+raw_data = pd.read_parquet("data/green_tripdata_2024-03.parquet")
 
-begin = datetime.datetime(2022, 2, 1, 0, 0)
+begin = datetime.datetime(2024, 3, 1, 0, 0)
 num_features = ["passenger_count", "trip_distance", "fare_amount", "total_amount"]
 cat_features = ["PULocationID", "DOLocationID"]
 data_definition = DataDefinition(
@@ -52,6 +59,8 @@ report = Report(
         ValueDrift(column="prediction"),
         DriftedColumnsCount(),
         MissingValueCount(column="prediction"),
+        QuantileValue(column="fare_amount", quantile=0.5),
+        QuantileValue(column="total_amount", quantile=0.5),
     ]
 )
 
@@ -94,15 +103,19 @@ def calculate_metrics_postgresql(i):
     prediction_drift = result["metrics"][0]["value"]
     num_drifted_columns = result["metrics"][1]["value"]["count"]
     share_missing_values = result["metrics"][2]["value"]["share"]
+    fare_amount_quantile = result["metrics"][3]["value"]
+    total_amount_quantile = result["metrics"][4]["value"]
     with psycopg.connect(CONNECTION_STRING_DB, autocommit=True) as conn:
         with conn.cursor() as curr:
             curr.execute(
-                "insert into dummy_metrics(timestamp, prediction_drift, num_drifted_columns, share_missing_values) values (%s, %s, %s, %s)",
+                "insert into dummy_metrics(timestamp, prediction_drift, num_drifted_columns, share_missing_values, fare_amount_quantile, total_amount_quantile) values (%s, %s, %s, %s, %s, %s)",
                 (
                     begin + datetime.timedelta(i),
                     prediction_drift,
                     num_drifted_columns,
                     share_missing_values,
+                    fare_amount_quantile,
+                    total_amount_quantile,
                 ),
             )
 
@@ -111,7 +124,7 @@ def calculate_metrics_postgresql(i):
 def batch_monitoring_backfill():
     prep_db()
     last_send = datetime.datetime.now() - datetime.timedelta(seconds=10)
-    for i in range(0, 27):
+    for i in range(0, 31):
         calculate_metrics_postgresql(i)
 
         new_send = datetime.datetime.now()
