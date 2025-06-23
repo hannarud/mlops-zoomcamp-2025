@@ -34,6 +34,13 @@
 * Homework: [description](https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/cohorts/2025/04-deployment/homework.md), submit [here](https://courses.datatalks.club/mlops-zoomcamp-2025/homework/hw4)
 * My solved homework is here: [week4_homework](week4_homework)
 
+## Week 5
+
+* Went through the videos & comments [here](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/05-monitoring) (basically, they are also videos 22-30 from the [course playlist](https://www.youtube.com/playlist?list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK))
+* There was no special notes from me for week 5
+* Homework: [description](https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/cohorts/2025/05-monitoring/homework.md), submit [here](https://courses.datatalks.club/mlops-zoomcamp-2025/homework/hw5)
+* My solved homework is here: [monitoring](monitoring)
+
 ## Where to pick up
 
 * main flow: https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/05-monitoring
