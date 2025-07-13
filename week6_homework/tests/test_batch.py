@@ -22,6 +22,13 @@ def test_prepare_data():
     columns = ['PULocationID', 'DOLocationID', 'tpep_pickup_datetime', 'tpep_dropoff_datetime']
     df = pd.DataFrame(data, columns=columns)
 
+    df.to_parquet(
+        "test_parquet.parquet",
+        engine='pyarrow',
+        compression=None,
+        index=False,
+    )
+
     expected_processed_data = [
         ("-1", "-1", dt(1, 1), dt(1, 10), 9.0),
         ("1", "1", dt(1, 2), dt(1, 10), 8.0),     

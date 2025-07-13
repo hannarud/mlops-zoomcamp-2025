@@ -32,6 +32,10 @@ def read_data(filename: str, categorical: list[str] = ["PULocationID", "DOLocati
     return df
 
 
+def save_data(df: pd.DataFrame, filename: str):
+    df.to_parquet(filename, engine="pyarrow", compression=None, index=False)
+
+
 def main(year: int, month: int, taxi_type: str = "yellow", categorical: list[str] = ["PULocationID", "DOLocationID"]):
 
     print(f"Processing {taxi_type} data for {year}-{month}")
@@ -55,7 +59,9 @@ def main(year: int, month: int, taxi_type: str = "yellow", categorical: list[str
 
     output_file = f"{taxi_type}-{year:04d}-{month:02d}.parquet"
 
-    df_result.to_parquet(output_file, engine="pyarrow", compression=None, index=False)
+    save_data(df_result, output_file)
+
+    print(f"Saved data to {output_file}")
 
 
 if __name__ == "__main__":
