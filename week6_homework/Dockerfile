@@ -1,14 +1,12 @@
-FROM agrigorev/zoomcamp-model:mlops-2024-3.10.13-slim
+FROM python:3.10-bullseye
 
-RUN pip install -U pip
-RUN pip install pipenv 
-
-WORKDIR /app
+RUN pip install -U pip & pip install pipenv
 
 COPY [ "Pipfile", "Pipfile.lock", "./" ]
 
 RUN pipenv install --system --deploy
 
-COPY [ "week4_homework.py", "./" ]
+COPY [ "batch.py", "batch.py" ]
+COPY [ "model.bin", "model.bin" ]
 
-ENTRYPOINT [ "python", "week4_homework.py", "yellow", "2023", "4"]
+ENTRYPOINT [ "python", "batch.py" ]

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# Week 4 homework script
+# Week 6 homework script
 
 import sys
 import pickle
@@ -13,12 +13,7 @@ with open("model.bin", "rb") as f_in:
     dv, model = pickle.load(f_in)
 
 
-categorical = ["PULocationID", "DOLocationID"]
-
-
-def read_data(filename):
-    df = pd.read_parquet(filename)
-
+def prepare_data(df: pd.DataFrame, categorical: list[str] = ["PULocationID", "DOLocationID"]):
     df["duration"] = df.tpep_dropoff_datetime - df.tpep_pickup_datetime
     df["duration"] = df.duration.dt.total_seconds() / 60
 
@@ -29,15 +24,21 @@ def read_data(filename):
     return df
 
 
-def run():
-    taxi_type = sys.argv[1]  # 'yellow'
-    year = int(sys.argv[2])  # 2023
-    month = int(sys.argv[3])  # 3
+def read_data(filename: str, categorical: list[str] = ["PULocationID", "DOLocationID"]):
+    df = pd.read_parquet(filename)
+
+    df = prepare_data(df, categorical)
+
+    return df
+
+
+def main(year: int, month: int, taxi_type: str = "yellow", categorical: list[str] = ["PULocationID", "DOLocationID"]):
 
     print(f"Processing {taxi_type} data for {year}-{month}")
 
     df = read_data(
-        f"https://d37ci6vzurychx.cloudfront.net/trip-data/{taxi_type}_tripdata_{year:04d}-{month:02d}.parquet"
+        f"https://d37ci6vzurychx.cloudfront.net/trip-data/{taxi_type}_tripdata_{year:04d}-{month:02d}.parquet",
+        categorical
     )
 
     dicts = df[categorical].to_dict(orient="records")
@@ -58,4 +59,4 @@ def run():
 
 
 if __name__ == "__main__":
-    run()
+    main(year=2023, month=3)
