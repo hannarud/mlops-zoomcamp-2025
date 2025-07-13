@@ -41,11 +41,18 @@
 * Homework: [description](https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/cohorts/2025/05-monitoring/homework.md), submit [here](https://courses.datatalks.club/mlops-zoomcamp-2025/homework/hw5)
 * My solved homework is here: [monitoring](monitoring)
 
+## Week 6
+
+* Went through materials [here](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/06-best-practices)
+* No special notes from me for this week
+* Homework [description](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/cohorts/2025/06-best-practices), submit [here](https://courses.datatalks.club/mlops-zoomcamp-2025/homework/hw6)
+* My solved homework is here: [week6_homework](week6_homework)
+
 ## Where to pick up
 
-* main flow: https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/05-monitoring
-* main playlist: https://youtu.be/MiA7LQin9c8?si=S4XEKhuCy7p31Bz0
-* 2025 cohort flow: https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/cohorts/2025/05-monitoring
+* main flow: https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/07-project
+* main playlist: https://www.youtube.com/playlist?list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK
+* 2025 cohort flow: https://github.com/DataTalksClub/mlops-zoomcamp/blob/main/cohorts/2025/project.md
 * 2025 cohort playlist: https://www.youtube.com/watch?v=rv43YJQsZIw&list=PL3MmuxUbc_hLDZ8j0yyeX14N7fGfV4ovC&index=2 - basically, I watched everything here already
 
 ## Homeworks and projects
@@ -63,3 +70,4 @@ _(put here the links and materials mentioned during the course as useful and I w
 * Try to use Kubeflow pipelines for workflow orchestration
 * Using S3 bucket to receive data updates: https://www.youtube.com/watch?v=jVmaaqs63O8&list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK - try to establish data pipelines with periodic dataset updates and create markdown artifacts
 * Videos from module 4 are gold :star: + need to watch an optional video before Module 6
+* [Module 6 videos](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/06-best-practices) - I didn't work on all of them
