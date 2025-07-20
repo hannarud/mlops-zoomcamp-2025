@@ -48,6 +48,11 @@
 * Homework [description](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/cohorts/2025/06-best-practices), submit [here](https://courses.datatalks.club/mlops-zoomcamp-2025/homework/hw6)
 * My solved homework is here: [week6_homework](week6_homework)
 
+## Project
+
+* Project is done in a separate repo [here](https://github.com/hannarud/energy-behavior-prosumers-kaggle-mlops). But I will put notes here, if any
+* Task description is [here](https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/07-project)
+
 ## Where to pick up
 
 * main flow: https://github.com/DataTalksClub/mlops-zoomcamp/tree/main/07-project
